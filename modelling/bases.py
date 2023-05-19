@@ -60,8 +60,8 @@ class ModelBase(pl.LightningModule):
             if cfg.TEST.ONLY_TEST:
                 # To make sure that loaded hparams are overwritten by cfg we may have chnaged
                 hparams = {**kwargs, **cfg}
-        self.hparams = AttributeDict(hparams)
-        self.save_hyperparameters(self.hparams)
+        updated_hparams = AttributeDict(hparams)
+        self.save_hyperparameters(updated_hparams)
 
         if test_dataloader is not None:
             self.test_dataloader = test_dataloader
