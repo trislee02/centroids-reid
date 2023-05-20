@@ -292,7 +292,7 @@ class ModelBase(pl.LightningModule):
         log_data = {"mAP": mAP}
 
         # TODO This line below is hacky, but it works when grad_monitoring is active
-        self.trainer.logger_connector.callback_metrics.update(log_data)
+        self.trainer._logger_connector.callback_metrics.update(log_data)
         log_data = {**log_data, **topks}
         self.trainer.logger.log_metrics(log_data, step=self.trainer.current_epoch)
 
@@ -315,7 +315,7 @@ class ModelBase(pl.LightningModule):
             if self.trainer.global_rank == 0 and self.trainer.local_rank == 0:
                 self.get_val_metrics(embeddings, labels, camids)
             del embeddings, labels, camids
-        self.trainer.accelerator_backend.barrier()
+        # self.trainer.accelerator_backend.barrier()
 
     @rank_zero_only
     def eval_on_train(self):
